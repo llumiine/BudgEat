@@ -11,7 +11,7 @@ class CarteBancaireController extends AbstractController
     /**
      * @Route("/carte/bancaire", name="app_carte_bancaire")
      */
-    public function index(): Response
+    public function index(): Response //test Milena
     {
         return $this->render('carte_bancaire/index.html.twig', [
             'controller_name' => 'CarteBancaireController',
