@@ -15,7 +15,7 @@ class CategorieRestaurants
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $id; //cath
 
     /**
      * @ORM\Column(type="string", length=255)
