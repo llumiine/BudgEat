@@ -27,10 +27,6 @@ class Clients
      */
     private $prenom;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $age;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -81,18 +77,7 @@ class Clients
         return $this;
     }
 
-    public function getAge(): ?int
-    {
-        return $this->age;
-    }
-
-    public function setAge(int $age): self
-    {
-        $this->age = $age;
-
-        return $this;
-    }
-
+   
     public function getMail(): ?string
     {
         return $this->mail;
