@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription Client{% endblock %}
+
+{% block body %}
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f8f9fa;
+        padding: 20px;
+    }
+    
+    .example-wrapper {
+        margin: 1em auto;
+        max-width: 800px;
+        width: 95%;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        box-shadow: none;
+        border: 1px solid #ced4da;
+        transition: box-shadow 0.2s ease;
+    }
+
+    .form-control:focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: #343a40;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        border-radius: 10px;
+        padding: 10px 20px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    form {
+        background-color: #fff;
+        border-radius: 15px;
+        padding: 40px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .row {
+        margin-bottom: 15px;
+    }
+</style>
+
+<div class="example-wrapper">
+    <h1>Inscription Client</h1>
+
+    {{ form_start(form) }}
+
+    <div class="row">
+        <div class="col">
+            <div class="mb-3">
+                {{ form_label(form.prenom, null, {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.prenom) }}
+            </div>
+        </div>
+        <div class="col">
+            <div class="mb-3">
+                {{ form_label(form.nom, null, {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.nom) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.mail, null, {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.mail, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.mail) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.mdp, null, {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.mdp, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.mdp) }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">S'inscrire</button>
+
+    {{ form_end(form) }}
+</div>
+
+{% endblock %}
