@@ -47,7 +47,7 @@ class ClientsController extends AbstractController
      */
     public function success(): Response
     {
-        return $this->render('inscription/success.html.twig', [
+        return $this->render('clients/success.html.twig', [
             'message' => 'Nouveau compte ajouté avec succès !',
         ]);
     }
