@@ -37,9 +37,9 @@ class ConnexionController extends AbstractController
 
             // Rediriger l'utilisateur vers le tableau de bord en fonction de son rôle
             if ($client->getRole() === 1) {
-                return $this->render('home/index.html.twig');
+                return $this->render('dashboard/index.html.twig');
             } elseif ($client->getRole() === 2) {
-                return $this->render('home/admin.html.twig');
+                return $this->render('dashboard/admin.html.twig');
             }
         } else {
             // Email ou mot de passe incorrect
@@ -55,7 +55,6 @@ class ConnexionController extends AbstractController
      */
     public function dashboard(Request $request): Response
     {
-        
         // Récupérer les informations de l'utilisateur depuis la session
         $session = $request->getSession();
         $role = $session->get('user_role');
@@ -66,7 +65,7 @@ class ConnexionController extends AbstractController
             return $this->redirectToRoute('unauthorized');
         }
 
-        return $this->render('home/index.html.twig');
+        return $this->render('dashboard/index.html.twig');
     }
 
     /**
@@ -84,18 +83,9 @@ class ConnexionController extends AbstractController
             return $this->redirectToRoute('unauthorized');
         }
 
-        return $this->render('home/admin.html.twig');
+        return $this->render('dashboard/admin.html.twig');
     }
 
-    /**
-     * @Route("/unauthorized", name="unauthorized")
-     */
-    public function unauthorized(): Response
-    {
-        return $this->render('home/unauthorized.html.twig', [
-            'message' => 'Accès non autorisé',
-        ]);
-    }
 
     /**
      * @Route("/logout", name="app_logout")
