@@ -31,7 +31,7 @@ class ConnexionController extends AbstractController
         // Si un client est trouvé et que les mots de passe correspondent
         if ($client && $mdp === $client->getMdp()) {
             // L'utilisateur est authentifié, on gère la session
-            $session = $request->getS     ession();
+            $session = $request->getSession  ();
             $session->set('user_id', $client->getId()); // Sauvegarder l'ID de l'utilisateur dans la session
             $session->set('user_role', $client->getRole()); // Sauvegarder le rôle de l'utilisateur dans la session
 
@@ -55,6 +55,7 @@ class ConnexionController extends AbstractController
      */
     public function dashboard(Request $request): Response
     {
+        
         // Récupérer les informations de l'utilisateur depuis la session
         $session = $request->getSession();
         $role = $session->get('user_role');

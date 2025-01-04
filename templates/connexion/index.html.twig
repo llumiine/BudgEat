@@ -12,6 +12,7 @@
     }
 
     .container {
+        margin-top: 90px;
         display: flex;
         justify-content: space-between; /* Place les éléments aux extrémités gauche et droite */
         align-items: center; /* Aligne les éléments verticalement au centre */
@@ -36,13 +37,19 @@
     .mb-3, button {
         margin: 50px;
     }
+
+    .btn  {
+        background-color: #ffcc00;
+        border: #ffcc00;
+        font-weight: bold;
+    }
 </style>
 
 <!-- Conteneur Flexbox pour le logo à gauche et le formulaire à droite -->
 <div class="container">
     <!-- Logo à gauche -->
     <div class="logo">
-        <img src="{{ asset('images/logo.png') }}" alt="Logo">
+        <img src="/assets/logo.png" alt="Logo">
     </div>
 
     <!-- Formulaire à droite -->

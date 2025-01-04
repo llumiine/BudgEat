@@ -1,20 +1,381 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Home - BudgEat{% endblock %}
 
 {% block body %}
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    /* Navbar */
+
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1rem;
+        background-color: #fff;
+        border-bottom: 2px solid #ffcc00;
+    }
+    .navbar .logo img {
+        height: 150px;
+    }
+    .navbar ul {
+        list-style: none;
+        display: flex;
+        gap: 5rem;
+        margin: 0;
+        padding: 0;
+    }
+    .navbar ul li a {
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+    }
+    .navbar .buttons a {
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        font-weight: bold;
+        text-decoration: none;
+    }
+    .navbar .btn-login {
+        background-color: white;
+        color: #ffcc00;
+        border: 2px solid #ffcc00;
+        margin: 2rem;
+    }
+    .navbar .btn-signup {
+        background-color: #ffcc00;
+        color: white;
+        border: 2px solid #ffcc00;
+    }
+
+    /* Hero Section */
+    .hero {
+        display: flex;
+        align-items: center;
+        background-color: #ffcc00;
+        padding: 2rem;
+        color: #333;
+    }
+    .hero-content {
+        max-width: 50%;
+        padding: 0 4.5rem;
+    }
+    .hero-content h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+    .hero-content p {
+        font-size: 1.2rem;
+    }
+    /* Conteneur principal du carrousel */
+.carousel {
+    position: relative;
+    width: 100%;
+    max-width: 600px; /* Limite la largeur */
+    margin: 0 auto; /* Centré horizontalement */
+    overflow: hidden; /* Cache les images non visibles */
+    border-radius: 10px; /* Arrondi les bords du carrousel */
+}
+
+/* Images dans le carrousel */
+.carousel-images {
+    display: flex;
+    transition: transform 0.5s ease-in-out; /* Animation de défilement */
+}
+
+.carousel-images img {
+    width: 100%;
+    flex-shrink: 0; /* Empêche le rétrécissement des images */
+    object-fit: cover; /* Maintient les proportions de l'image */
+    height: 300px;
+}
+
+/* Boutons de navigation */
+.carousel-buttons {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+    pointer-events: none; /* Empêche les boutons de bloquer le clic sur les images */
+}
+
+.carousel-buttons button {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: white;
+    font-size: 2rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    pointer-events: auto; /* Active le clic pour les boutons */
+    transition: background-color 0.3s ease;
+    z-index: 10;
+}
+
+.carousel-buttons button:hover {
+    background-color: rgba(0, 0, 0, 0.8); /* Changement de couleur au survol */
+}
+
+/* Indicateurs (petits points) */
+.carousel-indicators {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+}
+
+.carousel-indicators span {
+    width: 12px;
+    height: 12px;
+    background-color: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.carousel-indicators span.active {
+    background-color: #333;
+}
+
+    /* BudgEat and Restaurants */
+    .budget, .restaurants {
+        padding: 2rem;
+        text-align: center;
+    }
+
+    .budget {
+        text-align: center;
+        padding: 2rem;
+        background-color: #f8f5f1;
+        border-radius: 10px;
+        max-width: 400px;
+        margin: 2rem auto;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .budget h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: #333;
+    }
+
+    .budget-input {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #ffcc00;
+        border-radius: 25px;
+        background-color: white;
+        padding: 0.5rem 1rem;
+    }
+
+    .budget-btn {
+        font-size: 1.5rem;
+        font-weight: bold;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #333;
+        padding: 0 1rem;
+        transition: color 0.3s ease;
+    }
+
+    .budget-btn:hover {
+        color: #ffcc00;
+    }
+
+    #budget-display {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin: 0 1rem;
+        color: #333;
+    }
+    
+    .hess {
+        display: flex;
+        justify-content: center; /* Centre horizontalement */
+        align-items: center; /* Aligne verticalement */
+        position: relative; /* Nécessaire pour positionner le bouton à droite */
+    }
+    
+    .hess h2 {
+        margin: 0; /* Supprime les marges par défaut */
+        font-size: 1.5rem;
+        color: #333;
+        text-align: center;
+        flex-grow: 1; /* Permet à l'élément de prendre tout l'espace restant */
+    }
+    
+    .hess button {
+        position: absolute;
+        right: 0; /* Place le bouton à droite */
+        background-color: #ffcc00;
+        color: #fff;
+        border-radius: 5px;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        font-weight: bold;
+    }
+    
+    .hess button:hover {
+        background-color: #e6b800; /* Couleur au survol */
+    }
+    
+    .restaurants { padding: 2rem; text-align: center; }
+    .restaurants h2 { margin-bottom: 2rem; }
+    .restaurant-list { display: flex; gap: 1rem; justify-content: center; }
+    .restaurant-card { background-color: #fff; border: 1px solid #ddd; border-radius: 10px; width: 200px; text-align: center; padding: 1rem; }
+    .restaurant-card img{ width: 80%; height: 180px; border-radius: 10px; margin-bottom: 1rem; }
+    .restaurant-card button { margin-top: 0.5rem; padding: 0.5rem 1rem; border-radius: 5px; background-color: #ffcc00; color: white; font-weight: bold; }
+    
 </style>
 
-<div class="example-wrapper">
-    <h1>Hello  ✅</h1>
-
-    This friendly message is coming from:
+<!-- Navbar -->
+<div class="navbar">
+    <div class="logo">
+        <img src="/assets/logo.png" alt="BudgEat Logo">
+    </div>
     <ul>
-        <li>Your controller at <code><a href="{{ 'C:/wamp64/www/symfony/BudgEat/src/Controller/HomeController.php'|file_link(0) }}">src/Controller/HomeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/wamp64/www/symfony/BudgEat/templates/home/index.html.twig'|file_link(0) }}">templates/home/index.html.twig</a></code></li>
+        <li><a href=" ">Restaurants</a ></li>
+        <li><a href="/contact">Contact</a ></li>
     </ul>
+    <div class="buttons">
+        <a href="/connexion" class="btn-login">Connexion</a >
+        <a href="/clients/inscription" class="btn-signup">Inscription</a >
+    </div>
 </div>
+
+<!-- Hero Section -->
+<div class="hero">
+    <div class="hero-content">
+        <h1>Mangez Malin</h1>
+        <p>Trouvez les meilleurs restos près de chez vous,</br> adaptés à votre budget !</p >
+    </div>
+    <div class="carousel">
+        <div class="carousel-images">
+            <img src="/assets/subway.jpg" alt="Image 1">
+            <img src="/assets/burger.jpg" alt="Image 2">
+            <img src="/assets/bk.jpg" alt="Image 3">
+        </div>
+        <div class="carousel-buttons">
+            <button class="prev">&lt;</button>
+            <button class="next">&gt;</button>
+        </div>
+        <div class="carousel-indicators">
+            <span class="active" data-slide="0"></span>
+            <span data-slide="1"></span>
+            <span data-slide="2"></span>
+        </div>
+    </div>
+</div>
+
+<!-- Budget Section -->
+<div class="budget">
+    <h2>C’est quoi ton budget, chef ?</h2>
+    <div class="budget-input">
+        <button class="budget-btn" id="decrease">-</button>
+        <span id="budget-display">10 €</span>
+        <button class="budget-btn" id="increase">+</button>
+    </div>
+</div>
+
+
+<!-- Restaurants Section -->
+<div class="restaurants">
+    <div class="hess"><h2>Quand c’est la hess...</h2> <button>Voir plus</button></div>
+    <div class="restaurant-list">
+        <div class="restaurant-card">
+            <img src="/assets/matcha.jpg" alt="Ochaya">
+            <h3>Restaurants Ochaya</h3>
+            <p>4,7 ★ - 50 m</p >
+            <button>Menu</button>
+            <button>Trajet</button>
+        </div>
+        <div class="restaurant-card">
+            <img src="/assets/kodawari.jpg" alt="Kodawari Tsukiji">
+            <h3>Kodawari Tsukiji</h3>
+            <p>4,0 ★ - 3 km</p >
+            <button>Menu</button>
+            <button>Trajet</button>
+        </div>
+        <div class="restaurant-card">
+            <img src="/assets/ponpon.jpg" alt="Ponpon Mochi Donuts">
+            <h3>Ponpon Mochi</h3>
+            <p>4,8 ★ - 5 km</p >
+            <button>Menu</button>
+            <button>Trajet</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const images = document.querySelectorAll('.carousel-images img');
+    const carouselImages = document.querySelector('.carousel-images');
+    const indicators = document.querySelectorAll('.carousel-indicators span');
+    const prevButton = document.querySelector('.prev');
+    const nextButton = document.querySelector('.next');
+
+    let currentIndex = 0;
+
+    function updateCarousel() {
+        carouselImages.style.transform = `translateX(-${currentIndex * 100}%)`;
+        indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === currentIndex);
+        });
+    }
+
+    nextButton.addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % images.length;
+        updateCarousel();
+    });
+
+    prevButton.addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        updateCarousel();
+    });
+
+    indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+            currentIndex = index;
+            updateCarousel();
+        });
+    });
+
+    updateCarousel();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const decreaseButton = document.getElementById('decrease');
+            const increaseButton = document.getElementById('increase');
+            const budgetDisplay = document.getElementById('budget-display');
+    
+            let currentBudget = 10; // Budget initial
+    
+            // Met à jour l'affichage du budget
+            function updateBudgetDisplay() {
+                budgetDisplay.textContent = `${currentBudget} €`;
+            }
+    
+            // Diminue le budget par tranches de 5
+            decreaseButton.addEventListener('click', () => {
+                if (currentBudget > 5) { // Évite un budget négatif
+                    currentBudget -= 5;
+                    updateBudgetDisplay();
+                }
+            });
+    
+            // Augmente le budget par tranches de 5
+            increaseButton.addEventListener('click', () => {
+                currentBudget += 5;
+                updateBudgetDisplay();
+            });
+    
+            // Initialisation de l'affichage
+            updateBudgetDisplay();
+        });
+   
+</script>
 {% endblock %}

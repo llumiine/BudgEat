@@ -49,6 +49,7 @@ class ClientsController extends AbstractController
     {
         return $this->render('clients/success.html.twig', [
             'message' => 'Nouveau compte ajouté avec succès !',
+            'login_url' => $this->generateUrl('app_login'),
         ]);
     }
 }
