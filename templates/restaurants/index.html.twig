@@ -1,20 +1,415 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello RestaurantsController!{% endblock %}
+{% block title %}Home - BudgEat{% endblock %}
 
 {% block body %}
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    /* Navbar */
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1rem;
+        background-color: #fff;
+        border-bottom: 2px solid #ffcc00;
+    }
+    .navbar .logo img {
+        height: 150px;
+    }
+    .navbar ul {
+        list-style: none;
+        display: flex;
+        gap: 5rem;
+        margin: 0;
+        padding: 0;
+    }
+    .navbar ul li a {
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+    }
+    .navbar .buttons a {
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        font-weight: bold;
+        text-decoration: none;
+    }
+    .navbar .btn-login {
+        background-color: white;
+        color: #ffcc00;
+        border: 2px solid #ffcc00;
+        margin: 2rem;
+    }
+    .navbar .btn-signup {
+        background-color: #ffcc00;
+        color: white;
+        border: 2px solid #ffcc00;
+    }
+
+    /* Hero Section */
+    .hero {
+        display: flex;
+        align-items: center;
+        background-color: #ffcc00;
+        padding: 2rem;
+        color: #333;
+    }
+    .hero-content {
+        max-width: 50%;
+        padding: 0 4.5rem;
+    }
+    .hero-content h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+    .hero-content p {
+        font-size: 1.2rem;
+    }
+
+    /* Conteneur principal du carrousel */
+    .carousel {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        overflow: hidden;
+        border-radius: 10px;
+    }
+
+    /* Images dans le carrousel */
+    .carousel-images {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+    }
+
+    .carousel-images img {
+        width: 100%;
+        flex-shrink: 0;
+        object-fit: cover;
+        height: 300px;
+    }
+
+    /* Boutons de navigation */
+    .carousel-buttons {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        transform: translateY(-50%);
+    }
+
+    .carousel-buttons button {
+        background-color: rgba(0, 0, 0, 0.5);
+        border: none;
+        color: white;
+        font-size: 2rem;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Indicateurs (petits points) */
+    .carousel-indicators {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 10px;
+    }
+
+    .carousel-indicators span {
+        width: 12px;
+        height: 12px;
+        background-color: #fff;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .carousel-indicators span.active {
+        background-color: #333;
+    }
+
+    /* Filter Section */
+    .filters {
+        text-align: center;
+        margin: 2rem 0;
+    }
+
+    .filter-btn {
+        background-color: #ffcc00;
+        color: white;
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 0.5rem;
+        border: none;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .filter-btn:hover {
+        background-color: #e6b800;
+        transform: translateY(-3px);
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .filter-btn.active {
+        background-color: #e6b800;
+        transform: scale(1.05);
+        font-weight: bold;
+    }
+
+    /* Animation pour les boutons */
+    .filters .filter-btn:focus {
+        outline: none;
+    }
+
+    /* Responsive: Affichage des filtres sur une seule ligne sur petits écrans */
+    @media (max-width: 768px) {
+        .filters {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .filter-btn {
+            margin: 0.5rem 0;
+            width: 80%;
+        }
+    }
+
+    /* Restaurants Section */
+    .restaurants {
+        padding: 2rem;
+        text-align: center;
+    }
+
+    .restaurants h2 {
+        margin-bottom: 2rem;
+    }
+
+    .restaurant-list {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .restaurant-card {
+        background-color: #ffcc00;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        width: 220px;
+        text-align: center;
+        padding: 1.5rem 1rem;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .restaurant-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .restaurant-card img {
+        width: 100%;
+        height: 150px;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        object-fit: cover;
+    }
+
+    .restaurant-card h3 {
+        font-size: 1.3rem;
+        margin: 0.5rem 0;
+        font-weight: bold;
+    }
+
+    .restaurant-card p {
+        font-size: 1rem;
+        color: #333;
+        margin-bottom: 1rem;
+    }
+
+    .restaurant-card button {
+        padding: 0.6rem 1.2rem;
+        border-radius: 25px;
+        background-color: black;
+        color: white;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+    }
+
+    /* Footer Global */
+    .footer {
+        background-color: #333; /* Fond sombre pour le footer */
+        color: white; /* Texte blanc */
+        padding: 2rem;
+        text-align: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        border-top: 1px solid #444;
+    }
+
+    /* Logo du Footer */
+    .footer-logo img {
+        height: 50px;
+        margin-bottom: 1rem;
+    }
+
+    /* Section des icônes de réseaux sociaux */
+    .footer-socials {
+        display: flex;
+        gap: 1.5rem;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+    /* Style pour chaque icône */
+    .footer-social-icon i {
+        font-size: 28px; /* Taille des icônes */
+        color: #fff; /* Couleur blanche pour les icônes */
+        transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    /* Effet au survol : Change la couleur et applique un effet de zoom */
+    .footer-social-icon:hover i {
+        color: #ffcc00; /* Jaune lors du survol */
+        transform: scale(1.2); /* Agrandissement de l'icône */
+    }
+
+    /* Section de texte copyright */
+    .footer-text {
+        color: #bbb; /* Texte clair */
+        margin-top: 1rem;
+        font-size: 0.9rem;
+    }
+
+    .footer-text a {
+        color: #ffcc00; /* Liens en jaune */
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .footer-text a:hover {
+        color: #fff; /* Changement de couleur au survol du lien */
+    }
 </style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
+<!-- Navbar -->
+<div class="navbar">
+    <div class="logo">
+        <img src="/assets/logo.png" alt="BudgEat Logo">
+    </div>
     <ul>
-        <li>Your controller at <code><a href="{{ '/Applications/MAMP/htdocs/BudgEat/budgeat/src/Controller/RestaurantsController.php'|file_link(0) }}">src/Controller/RestaurantsController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/Applications/MAMP/htdocs/BudgEat/budgeat/templates/restaurants/index.html.twig'|file_link(0) }}">templates/restaurants/index.html.twig</a></code></li>
+        <li><a href=" ">Restaurants</a></li>
+        <li><a href="/contact">Contact</a></li>
     </ul>
+    <div class="buttons">
+        <a href="/connexion" class="btn-login">Connexion</a>
+        <a href="/clients/inscription" class="btn-signup">Inscription</a>
+    </div>
+</div>
+
+<!-- Hero Section -->
+<div class="hero">
+    <div class="hero-content">
+        <h1>Bienvenue sur BudgEat</h1>
+        <p>Découvrez les meilleurs restaurants à proximité, selon vos préférences et votre budget.</p>
+    </div>
+</div>
+
+<!-- Filter Section -->
+<div class="filters">
+    <button class="filter-btn" onclick="filterRestaurants('all')" id="filter-all">Tous</button>
+    <button class="filter-btn" onclick="filterRestaurants('asiatique')" id="filter-asiatique">Asiatique</button>
+    <button class="filter-btn" onclick="filterRestaurants('halal')" id="filter-halal">Halal</button>
+    <button class="filter-btn" onclick="filterRestaurants('fastfood')" id="filter-fastfood">Fastfood</button>
+</div>
+
+<!-- Restaurant Section -->
+<div class="restaurants">
+    <h2>Nos Restaurants</h2>
+    <div id="restaurant-list" class="restaurant-list"></div>
+</div>
+
+<script>
+    // Liste de restaurants avec leur type
+    const restaurants = [
+        { name: 'Ochaya', type: 'asiatique', image: '/assets/matcha.jpg', rating: 4.7, distance: '50 m' },
+        { name: 'Kodawari Tsukiji', type: 'asiatique', image: '/assets/kodawari.jpg', rating: 4.0, distance: '3 km' },
+        { name: 'Ponpon Mochi', type: 'halal', image: '/assets/ponpon.jpg', rating: 4.8, distance: '5 km' },
+        { name: 'Subway', type: 'fastfood', image: '/assets/subway.jpg', rating: 4.3, distance: '1 km' },
+        { name: 'McDonalds', type: 'fastfood', image: '/assets/burger.jpg', rating: 4.2, distance: '2 km' },
+    ];
+
+    // Fonction pour afficher les restaurants
+    function displayRestaurants(filteredRestaurants) {
+        const restaurantList = document.getElementById('restaurant-list');
+        restaurantList.innerHTML = '';
+
+        filteredRestaurants.forEach(restaurant => {
+            const card = document.createElement('div');
+            card.classList.add('restaurant-card');
+            card.innerHTML = `
+                <img src="${restaurant.image}" alt="${restaurant.name}">
+                <h3>${restaurant.name}</h3>
+                <p>${restaurant.rating} ★ - ${restaurant.distance}</p>
+                <button>Menu</button>
+                <button>Trajet</button>
+            `;
+            restaurantList.appendChild(card);
+        });
+    }
+
+    // Fonction pour filtrer les restaurants
+    function filterRestaurants(type) {
+        // Retirer la classe 'active' de tous les boutons
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.classList.remove('active');
+        });
+
+        // Ajouter la classe 'active' au bouton sélectionné
+        const activeButton = document.getElementById(`filter-${type}`);
+        if (activeButton) activeButton.classList.add('active');
+
+        if (type === 'all') {
+            displayRestaurants(restaurants);
+        } else {
+            const filtered = restaurants.filter(restaurant => restaurant.type === type);
+            displayRestaurants(filtered);
+        }
+    }
+
+    // Initialisation avec tous les restaurants
+    filterRestaurants('all');
+</script>
+
+<!-- Footer Section -->
+<div class="footer">
+    <div class="footer-logo">
+        <img src="/assets/logo.png" alt="BudgEat">
+    </div>
+    <div class="footer-socials">
+        <div class="footer-social-icon">
+            <i class="fab fa-facebook"></i>
+        </div>
+        <div class="footer-social-icon">
+            <i class="fab fa-twitter"></i>
+        </div>
+        <div class="footer-social-icon">
+            <i class="fab fa-instagram"></i>
+        </div>
+    </div>
+    <div class="footer-text">
+        <p>&copy; 2025 BudgEat. Tous droits réservés.</p>
+    </div>
 </div>
 {% endblock %}
